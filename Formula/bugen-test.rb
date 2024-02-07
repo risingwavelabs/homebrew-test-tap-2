@@ -1,14 +1,13 @@
 class BugenTest < Formula
-  desc "Bugen test"
+  desc "Test by Bugen"
   homepage "https://github.com/BugenZhao/homebrew-test-repo"
-  url "https://github.com/BugenZhao/homebrew-test-repo/archive/refs/tags/v0.1.tar.gz"
-  sha256 "0cc4605275a0efd3e9e8197d9dd05d97f09ab91410e4fe245ef6a0320aed51b6"
+  url "https://github.com/BugenZhao/homebrew-test-repo/archive/refs/tags/v0.2.tar.gz"
+  sha256 "ddf18cc3cf8b0baaf4f19fb083045bbae514a630a9f9f910a12d36a53ecf8387"
   license "Apache-2.0"
-  revision 1
+  revision 2
   head "https://github.com/BugenZhao/homebrew-test-repo.git", branch: "main"
 
   depends_on "cmake" => :build
-  depends_on "llvm" => :build
   depends_on "protobuf" => :build
   depends_on "rustup-init" => :build
   depends_on "openssl@3"
@@ -17,8 +16,7 @@ class BugenTest < Formula
   def install
     # this will install the necessary cargo/rustup toolchain bits in HOMEBREW_CACHE
     system "#{Formula["rustup-init"].bin}/rustup-init",
-           "-qy", "--no-modify-path",
-           "--default-toolchain", "none"
+           "-qy", "--no-modify-path"
     ENV.prepend_path "PATH", HOMEBREW_CACHE/"cargo_cache/bin"
 
     ENV.delete "RUSTFLAGS" # https://github.com/Homebrew/brew/pull/15544#issuecomment-1628639703
@@ -33,9 +31,14 @@ class BugenTest < Formula
       ENV["SDKROOT"] = ENV["HOMEBREW_SDKROOT"] = MacOS::CLT.sdk_path(MacOS.version)
     end
 
+    # Remove `"-Clink-arg=xxx/ld64.lld"` to avoid relying on llvm's lld.
+    inreplace ".cargo/config.toml" do |s|
+      s.gsub!(/"-Clink-arg=.*ld64.lld",?/, "")
+    end
+
     system "cargo", "install",
            "--profile", "dev",
-           *std_cargo_args # "--locked", "--root ...", "--path src/cmd_all"
+           *std_cargo_args(path: ".") # "--locked", "--root ..."
   end
 
   test do
