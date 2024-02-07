@@ -17,8 +17,7 @@ class BugenTest < Formula
   def install
     # this will install the necessary cargo/rustup toolchain bits in HOMEBREW_CACHE
     system "#{Formula["rustup-init"].bin}/rustup-init",
-           "-qy", "--no-modify-path",
-           "--default-toolchain", "none"
+           "-qy", "--no-modify-path"
     ENV.prepend_path "PATH", HOMEBREW_CACHE/"cargo_cache/bin"
 
     ENV.delete "RUSTFLAGS" # https://github.com/Homebrew/brew/pull/15544#issuecomment-1628639703
