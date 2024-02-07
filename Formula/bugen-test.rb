@@ -35,7 +35,7 @@ class BugenTest < Formula
 
     system "cargo", "install",
            "--profile", "dev",
-           *std_cargo_args # "--locked", "--root ...", "--path src/cmd_all"
+           *std_cargo_args(path: ".") # "--locked", "--root ...", "--path src/cmd_all"
   end
 
   test do
