@@ -1,13 +1,14 @@
 class BugenTest < Formula
   desc "Test by Bugen"
   homepage "https://github.com/BugenZhao/homebrew-test-repo"
-  url "https://github.com/BugenZhao/homebrew-test-repo/archive/refs/tags/v0.1.tar.gz"
-  sha256 "0cc4605275a0efd3e9e8197d9dd05d97f09ab91410e4fe245ef6a0320aed51b6"
+  url "https://github.com/BugenZhao/homebrew-test-repo/archive/refs/tags/v0.2.tar.gz"
+  sha256 "ddf18cc3cf8b0baaf4f19fb083045bbae514a630a9f9f910a12d36a53ecf8387"
   license "Apache-2.0"
   revision 2
   head "https://github.com/BugenZhao/homebrew-test-repo.git", branch: "main"
 
   depends_on "cmake" => :build
+  depends_on "llvm" => :build
   depends_on "protobuf" => :build
   depends_on "rustup-init" => :build
   depends_on "openssl@3"
