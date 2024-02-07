@@ -8,7 +8,7 @@ class BugenTest < Formula
   head "https://github.com/BugenZhao/homebrew-test-repo.git", branch: "main"
 
   depends_on "cmake" => :build
-  depends_on "llvm" => :build
+  # depends_on "llvm" => :build
   depends_on "protobuf" => :build
   depends_on "rustup-init" => :build
   depends_on "openssl@3"
