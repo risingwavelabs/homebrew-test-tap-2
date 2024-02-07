@@ -4,7 +4,7 @@ class BugenTest < Formula
   url "https://github.com/BugenZhao/homebrew-test-repo/archive/refs/tags/v0.1.tar.gz"
   sha256 "0cc4605275a0efd3e9e8197d9dd05d97f09ab91410e4fe245ef6a0320aed51b6"
   license "Apache-2.0"
-  revision 1
+  revision 2
   head "https://github.com/BugenZhao/homebrew-test-repo.git", branch: "main"
 
   depends_on "cmake" => :build
