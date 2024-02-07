@@ -8,7 +8,6 @@ class BugenTest < Formula
   head "https://github.com/BugenZhao/homebrew-test-repo.git", branch: "main"
 
   depends_on "cmake" => :build
-  depends_on "llvm" => :build
   depends_on "protobuf" => :build
   depends_on "rustup-init" => :build
   depends_on "openssl@3"
@@ -32,13 +31,14 @@ class BugenTest < Formula
       ENV["SDKROOT"] = ENV["HOMEBREW_SDKROOT"] = MacOS::CLT.sdk_path(MacOS.version)
     end
 
-    # Remove `llvm` from PATH and CMAKE_PREFIX_PATH
-    ENV["PATH"] = ENV["PATH"].split(":").reject { |p| p.include? "llvm" }.join(":")
-    ENV["CMAKE_PREFIX_PATH"] = ENV["CMAKE_PREFIX_PATH"].split(":").reject { |p| p.include? "llvm" }.join(":")
+    # Remove `"-Clink-arg=xxx/ld64.lld"` to avoid relying on llvm's lld.
+    inreplace ".cargo/config.toml" do |s|
+      s.gsub!(/"-Clink-arg=.*ld64.lld",?/, "")
+    end
 
     system "cargo", "install",
            "--profile", "dev",
-           *std_cargo_args(path: ".") # "--locked", "--root ...", "--path src/cmd_all"
+           *std_cargo_args(path: ".") # "--locked", "--root ..."
   end
 
   test do
