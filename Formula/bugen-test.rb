@@ -8,7 +8,7 @@ class BugenTest < Formula
   head "https://github.com/BugenZhao/homebrew-test-repo.git", branch: "main"
 
   depends_on "cmake" => :build
-  # depends_on "llvm" => :build
+  depends_on "llvm" => :build
   depends_on "protobuf" => :build
   depends_on "rustup-init" => :build
   depends_on "openssl@3"
@@ -31,6 +31,9 @@ class BugenTest < Formula
     if MacOS.version >= :mojave && MacOS::CLT.installed?
       ENV["SDKROOT"] = ENV["HOMEBREW_SDKROOT"] = MacOS::CLT.sdk_path(MacOS.version)
     end
+
+    # Remove `llvm` from PATH
+    ENV["PATH"] = ENV["PATH"].split(":").reject { |p| p.include? "llvm" }.join(":")
 
     system "cargo", "install",
            "--profile", "dev",
