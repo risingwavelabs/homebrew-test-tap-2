@@ -32,8 +32,9 @@ class BugenTest < Formula
       ENV["SDKROOT"] = ENV["HOMEBREW_SDKROOT"] = MacOS::CLT.sdk_path(MacOS.version)
     end
 
-    # Remove `llvm` from PATH
+    # Remove `llvm` from PATH and CMAKE_PREFIX_PATH
     ENV["PATH"] = ENV["PATH"].split(":").reject { |p| p.include? "llvm" }.join(":")
+    ENV["CMAKE_PREFIX_PATH"] = ENV["CMAKE_PREFIX_PATH"].split(":").reject { |p| p.include? "llvm" }.join(":")
 
     system "cargo", "install",
            "--profile", "dev",
